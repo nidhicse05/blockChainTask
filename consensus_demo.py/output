@@ -1,0 +1,62 @@
+import random
+from collections import Counter
+
+
+pow_miners = {
+    'Miner1': {'power': random.randint(50, 100)},
+    'Miner2': {'power': random.randint(50, 100)},
+    'Miner3': {'power': random.randint(50, 100)}
+}
+
+pos_stakers = {
+    'Staker1': {'stake': random.randint(500, 1000)},
+    'Staker2': {'stake': random.randint(500, 1000)},
+    'Staker3': {'stake': random.randint(500, 1000)}
+}
+
+dpos_delegates = ['DelegateA', 'DelegateB', 'DelegateC']
+dpos_voters = {
+    'Voter1': random.choice(dpos_delegates),
+    'Voter2': random.choice(dpos_delegates),
+    'Voter3': random.choice(dpos_delegates)
+}
+
+
+def simulate_pow():
+    print("\n🔨 Consensus Method: Proof-of-Work (PoW)")
+    print("📌 Logic: Select the miner with the highest computational power.\n")
+    for name, stats in pow_miners.items():
+        print(f"  {name}: power = {stats['power']}")
+    winner = max(pow_miners.items(), key=lambda x: x[1]['power'])[0]
+    print(f"\n✅ Selected Validator: {winner} (via PoW)\n")
+
+
+def simulate_pos():
+    print("\n💰 Consensus Method: Proof-of-Stake (PoS)")
+    print("📌 Logic: Select the staker with the highest amount of tokens staked.\n")
+    for name, stats in pos_stakers.items():
+        print(f"  {name}: stake = {stats['stake']}")
+    winner = max(pos_stakers.items(), key=lambda x: x[1]['stake'])[0]
+    print(f"\n✅ Selected Validator: {winner} (via PoS)\n")
+
+
+def simulate_dpos():
+    print("\n🗳️ Consensus Method: Delegated Proof-of-Stake (DPoS)")
+    print("📌 Logic: Voters select delegates; the one with the most votes is chosen. If tied, one is selected randomly.\n")
+    for voter, vote in dpos_voters.items():
+        print(f"  {voter} voted for {vote}")
+    
+    vote_counts = Counter(dpos_voters.values())
+    top_votes = vote_counts.most_common()
+    max_votes = top_votes[0][1]
+    
+    top_delegates = [delegate for delegate, votes in top_votes if votes == max_votes]
+    winner = random.choice(top_delegates)
+    
+    print(f"\n📊 Vote Tally: {dict(vote_counts)}")
+    print(f"\n✅ Selected Validator: {winner} (via DPoS)\n")
+
+
+simulate_pow()
+simulate_pos()
+simulate_dpos()
